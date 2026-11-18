@@ -1,0 +1,232 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Calendar</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="app-container">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="logo">
+            <span>📅</span>
+            <h2>SmartCalendar</h2>
+        </div>
+
+        <button class="primary-btn" id="addEventBtn">
+            + Create Event
+        </button>
+
+        <nav class="sidebar-menu">
+            <h4>MENU</h4>
+            <a href="#" class="active" id="calendarNav">📆 Calendar</a>
+            <a href="#upcomingSection">📌 Upcoming Events</a>
+            <a href="#holidaySection">🎉 Holidays</a>
+        </nav>
+
+        <div class="filter-section">
+            <h4>FILTER BY CATEGORY</h4>
+
+            <label><input type="checkbox" class="category-filter"
+                value="Personal" checked> <span class="dot purple"></span> Personal</label>
+
+            <label><input type="checkbox" class="category-filter"
+                value="Work" checked> <span class="dot blue"></span> Work</label>
+
+            <label><input type="checkbox" class="category-filter"
+                value="Study" checked> <span class="dot orange"></span> Study</label>
+
+            <label><input type="checkbox" class="category-filter"
+                value="Other" checked> <span class="dot green"></span> Other</label>
+        </div>
+
+        <div class="sidebar-bottom">
+            <button id="themeBtn" class="theme-btn">🌙 Dark Mode</button>
+            <button id="notificationBtn" class="theme-btn">
+                🔔 Enable Notifications
+            </button>
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+
+        <header class="top-header">
+            <div>
+                <h1>My Calendar</h1>
+                <p>Organize your time and stay productive.</p>
+            </div>
+
+            <div class="header-actions">
+                <input type="search" id="searchInput"
+                    placeholder="Search events...">
+                <span class="profile">👤</span>
+            </div>
+        </header>
+
+
+        <!-- CALENDAR -->
+        <section class="calendar-section" id="calendarSection">
+
+            <div class="calendar-header">
+
+                <div>
+                    <h2 id="monthYear"></h2>
+                    <p id="currentDateText"></p>
+                </div>
+
+                <div class="calendar-controls">
+                    <button id="prevBtn">❮</button>
+                    <button id="nextBtn">❯</button>
+                    <button id="todayBtn">Today</button>
+                </div>
+
+            </div>
+
+            <div class="calendar-grid weekdays">
+                <div>MON</div>
+                <div>TUE</div>
+                <div>WED</div>
+                <div>THU</div>
+                <div>FRI</div>
+                <div>SAT</div>
+                <div>SUN</div>
+            </div>
+
+            <div class="calendar-grid" id="calendarDays"></div>
+
+        </section>
+
+
+        <!-- SELECTED DATE -->
+        <section class="details-section">
+
+            <div class="section-heading">
+                <div>
+                    <h3 id="selectedDateTitle">Selected Date</h3>
+                    <p id="selectedDateText"></p>
+                </div>
+
+                <button class="small-btn" id="selectedAddBtn">
+                    + Add Event
+                </button>
+            </div>
+
+            <div id="selectedEvents" class="event-list">
+                <p class="empty-message">No events for this date.</p>
+            </div>
+
+        </section>
+
+
+        <!-- UPCOMING EVENTS -->
+        <section class="details-section" id="upcomingSection">
+
+            <div class="section-heading">
+                <div>
+                    <h3>Upcoming Events</h3>
+                    <p>Your next scheduled activities</p>
+                </div>
+            </div>
+
+            <div id="upcomingEvents" class="event-list"></div>
+
+        </section>
+
+
+        <!-- HOLIDAYS -->
+        <section class="details-section" id="holidaySection">
+
+            <div class="section-heading">
+                <div>
+                    <h3>Indian Holidays</h3>
+                    <p>Selected national and major public holidays</p>
+                </div>
+            </div>
+
+            <div id="holidayList" class="event-list"></div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<!-- EVENT MODAL -->
+<div class="modal-overlay" id="eventModal">
+
+    <div class="modal">
+
+        <div class="modal-header">
+            <h2 id="modalTitle">Create Event</h2>
+            <button type="button" id="closeModal" class="close-btn">✕</button>
+        </div>
+
+        <form id="eventForm">
+
+            <input type="hidden" id="eventId">
+
+            <label for="eventTitle">Event Title</label>
+            <input type="text" id="eventTitle"
+                placeholder="Enter event name" required maxlength="80">
+
+            <label for="eventDate">Date</label>
+            <input type="date" id="eventDate" required>
+
+            <label for="eventTime">Time</label>
+            <input type="time" id="eventTime">
+
+            <label for="eventCategory">Category</label>
+            <select id="eventCategory">
+                <option value="Personal">Personal</option>
+                <option value="Work">Work</option>
+                <option value="Study">Study</option>
+                <option value="Other">Other</option>
+            </select>
+
+            <label for="eventDescription">Description</label>
+            <textarea id="eventDescription"
+                placeholder="Write event details..."></textarea>
+
+            <label for="reminderTime">Reminder</label>
+            <select id="reminderTime">
+                <option value="-1">No reminder</option>
+                <option value="0">At event time</option>
+                <option value="5">5 minutes before</option>
+                <option value="15">15 minutes before</option>
+                <option value="30">30 minutes before</option>
+                <option value="60">1 hour before</option>
+                <option value="1440">1 day before</option>
+            </select>
+
+            <div class="modal-actions">
+                <button type="button" id="deleteEventBtn"
+                    class="delete-btn hidden">Delete</button>
+
+                <button type="button" id="cancelBtn"
+                    class="cancel-btn">Cancel</button>
+
+                <button type="submit" class="primary-btn">
+                    Save Event
+                </button>
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<script src="script.js"></script>
+</body>
+</html>
